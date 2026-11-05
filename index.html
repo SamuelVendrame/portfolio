@@ -174,6 +174,28 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
 .sys .url { font-size: 14px; font-weight: 700; text-decoration: none; word-break: break-all; margin-top: auto; color: var(--red); transition: color .25s; }
 .sys .url:hover { text-decoration: underline; }
 
+/* formação */
+.edu { padding-block: 44px 8px; align-items: start; }
+.course { grid-column: 1 / 6; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.course h3 { margin: 0; font-weight: 900; font-size: clamp(30px, 3.4vw, 46px); line-height: .95; letter-spacing: -.05em; text-wrap: balance; }
+.course .org { margin: 0; color: var(--mute); font-weight: 500; }
+.term { margin-top: 14px; }
+.term-h { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; font-size: 14px; }
+.term-h b { font-size: 28px; font-weight: 900; letter-spacing: -.04em; color: var(--red); font-variant-numeric: tabular-nums; }
+.bar { height: 12px; background: var(--grey); margin-top: 6px; position: relative; overflow: hidden; }
+.bar i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--red); transition: width 1.4s var(--ease) .3s; }
+.term-k { display: flex; justify-content: space-between; gap: 12px; margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--mute); font-variant-numeric: tabular-nums; }
+.tcc { grid-column: 7 / 13; border: 2px solid var(--ink); padding: 26px; display: flex; flex-direction: column; gap: 12px; min-width: 0; background: var(--paper); }
+.tcc-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.soon { background: var(--red); color: var(--w); font-weight: 800; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; padding: 6px 10px; }
+.tcc h3 { margin: 0; font-weight: 900; font-size: clamp(30px, 3.4vw, 46px); line-height: .9; letter-spacing: -.055em; }
+.tcc .tag { margin: 0; font-size: 17px; font-weight: 600; }
+.tcc .sq-list li { color: var(--mute); font-size: 15px; }
+.tcc-ph { margin-top: 8px; aspect-ratio: 16 / 7; max-width: 100%; border: 2px dashed var(--mute); display: grid; place-items: center;
+  background: repeating-linear-gradient(-45deg, transparent 0 14px, var(--grey) 14px 16px); }
+.tcc-ph span { background: var(--paper); padding: 8px 14px; font-weight: 900; font-size: clamp(18px, 2vw, 24px); letter-spacing: -.02em; text-transform: uppercase; animation: blinkSoon 2.4s steps(1) infinite; }
+@keyframes blinkSoon { 50% { color: var(--red); } }
+
 /* competências */
 .skg { padding-block: 22px; border-bottom: 1px solid var(--rule); }
 .skg h3 { grid-column: 1 / 4; margin: 0; font-size: 17px; font-weight: 800; letter-spacing: -.02em; padding-top: 7px; }
@@ -203,7 +225,13 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
 .contact h2 { font-size: clamp(34px, 5vw, 72px); color: var(--w); line-height: .9; }
 .mail { margin-top: 36px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
 .mail span { font-size: clamp(20px, 2.8vw, 34px); font-weight: 800; letter-spacing: -.035em; word-break: break-all; user-select: all; color: var(--k); }
-.copy { font: 700 14px/1 var(--f); padding: 13px 18px; border: 2px solid var(--w); background: transparent; color: var(--w); cursor: pointer; transition: background-color .2s, color .2s; }
+.copy { width: 42px; height: 42px; display: grid; place-items: center; padding: 0; border: 2px solid var(--w); background: transparent; color: var(--w); cursor: pointer; transition: background-color .2s, color .2s, transform .2s var(--ease); }
+.copy svg { width: 19px; height: 19px; grid-area: 1 / 1; }
+.copy .i-ok { opacity: 0; transform: scale(.5); transition: opacity .2s, transform .25s var(--ease); }
+.copy .i-copy { transition: opacity .2s, transform .25s var(--ease); }
+.copy.ok .i-copy { opacity: 0; transform: scale(.5); }
+.copy.ok .i-ok { opacity: 1; transform: none; }
+.copy:active { transform: scale(.92); }
 .copy:hover { background: var(--w); color: var(--red); }
 .contact .links { margin-top: 28px; }
 .contact .links a { background: var(--k); color: var(--w); font-size: 14px; padding: 12px 16px; }
@@ -211,6 +239,8 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
 .foot { margin-top: 64px; padding-top: 16px; border-top: 2px solid var(--k); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 13px; font-weight: 600; }
 
 @media (max-width: 900px) {
+  .course, .tcc { grid-column: 1 / -1; }
+  .tcc { margin-top: 32px; }
   h1, .hero .role, .hero .sum, .proj .txt, .proj .pic, .job .when, .job .what, .skg h3, .chips { grid-column: 1 / -1; }
   .orb { width: 40vw; right: -10vw; top: 56px; opacity: .95; }
   .proj .pic { margin: 0 0 28px; order: -1; }
@@ -238,6 +268,7 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
     <nav class="nav" aria-label="Seções">
       <a href="#projetos" data-i18n="nav.proj">Projetos</a>
       <a href="#experiencia" data-i18n="nav.exp">Experiência</a>
+      <a href="#formacao" data-i18n="nav.edu">Formação</a>
       <a href="#competencias" data-i18n="nav.skills">Competências</a>
       <a href="#contato" data-i18n="nav.contact">Contato</a>
     </nav>
@@ -251,7 +282,7 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
 
 <main id="inicio">
 <section class="hero" data-rail="Samuel Vendrame Bomfim">
-  <div class="orb" aria-hidden="true"><svg class="star" viewBox="0 0 100 100"><path d="M50 0C53 35 65 47 100 50C65 53 53 65 50 100C47 65 35 53 0 50C35 47 47 35 50 0Z"/></svg><svg class="sun" viewBox="0 0 100 100"><circle cx="50" cy="50" r="26"/><g><rect x="47" y="2" width="6" height="16" transform="rotate(0 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(30 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(60 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(90 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(120 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(150 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(180 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(210 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(240 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(270 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(300 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(330 50 50)"/></g></svg></div>
+  <div class="orb" aria-hidden="true"><svg class="star" viewBox="0 0 100 100"><polygon points="50.00,3.00 61.46,37.22 97.55,37.55 68.55,59.03 79.39,93.45 50.00,72.50 20.61,93.45 31.45,59.03 2.45,37.55 38.54,37.22"/></svg><svg class="sun" viewBox="0 0 100 100"><circle cx="50" cy="50" r="26"/><g><rect x="47" y="2" width="6" height="16" transform="rotate(0 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(30 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(60 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(90 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(120 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(150 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(180 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(210 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(240 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(270 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(300 50 50)"/><rect x="47" y="2" width="6" height="16" transform="rotate(330 50 50)"/></g></svg></div>
   <div class="wrap grid">
     <div class="kick">
       <span data-i18n="hero.now">Hoje na Livreria – Magna Opera</span>
@@ -414,12 +445,35 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
       </div>
     </div>
 
-    <div class="job grid">
-      <div class="when">01/2025 – 07/2027<small data-i18n="expected">previsão de conclusão</small></div>
-      <div class="what">
+  </div>
+</section>
+
+<section class="sec" id="formacao" data-rail="Formação" data-rail-en="Education">
+  <div class="wrap">
+    <div class="sec-h"><h2 data-i18n="sec.edu">Formação</h2><span class="count">UMFG · 2025–2027</span></div>
+    <div class="edu grid">
+      <div class="course">
+        <span class="kind" data-i18n="edu.kind">Graduação tecnológica</span>
         <h3 data-i18n="edu.role">Análise e Desenvolvimento de Sistemas</h3>
-        <p class="org"><span>UMFG, Cianorte</span> · <span data-i18n="edu.kind">Graduação tecnológica</span></p>
+        <p class="org">UMFG, Cianorte · PR</p>
+        <div class="term">
+          <div class="term-h"><span data-i18n="edu.time">Tempo de curso</span><b id="edu-pct">–</b></div>
+          <div class="bar"><i id="edu-bar"></i></div>
+          <div class="term-k"><span>01/2025</span><span><span data-i18n="expected">previsão de conclusão</span> · 07/2027</span></div>
+        </div>
       </div>
+      <article class="tcc">
+        <div class="tcc-top"><span class="kind" data-i18n="tcc.kind">Trabalho de conclusão de curso</span><span class="soon" data-i18n="soon">Em breve</span></div>
+        <h3>Finova</h3>
+        <p class="tag" data-i18n="tcc.tag">App mobile de gestão de gastos individuais e de casal.</p>
+        <ul class="sq-list">
+          <li data-i18n="tcc.b1">Lançamentos, relatórios, tetos por categoria com alertas de consumo e conta vinculada ao WhatsApp.</li>
+          <li data-i18n="tcc.b2">Requisitos e regras de negócio especificados antes do código, com as regras numa camada de domínio isolada.</li>
+          <li data-i18n="tcc.b3">115 testes automatizados e CI com typecheck, lint e testes.</li>
+        </ul>
+        <div class="stack">React Native / Expo / TypeScript / Jest / Testing Library / GitHub Actions</div>
+        <div class="tcc-ph" aria-hidden="true"><span data-i18n="soon">Em breve</span></div>
+      </article>
     </div>
   </div>
 </section>
@@ -442,7 +496,7 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
     <h2 data-i18n="c.h">Vamos conversar</h2>
     <div class="mail">
       <span id="email">samuelvbomfim@gmail.com</span>
-      <button class="copy" id="copy-email" type="button" data-i18n="c.copy">Copiar e-mail</button>
+      <button class="copy" id="copy-email" type="button" aria-label="Copiar e-mail" title="Copiar e-mail"><svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 8V4H4v12h4" fill="none" stroke="currentColor" stroke-width="2.2"/></svg><svg class="i-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="currentColor" stroke-width="2.6"/></svg></button>
     </div>
     <div class="links">
       <a href="https://www.linkedin.com/in/samuelvendrame" target="_blank" rel="noopener">LinkedIn ↗</a>
@@ -481,7 +535,7 @@ document.querySelectorAll(".meter").forEach(m => {
 });
 
 const EN = {
-  "nav.proj": "Projects", "nav.exp": "Experience", "nav.skills": "Skills", "nav.contact": "Contact",
+  "nav.proj": "Projects", "nav.exp": "Experience", "nav.skills": "Skills", "nav.edu": "Education", "nav.contact": "Contact",
   "hero.now": "Currently at Livreria – Magna Opera",
   "hero.loc": "São Manoel do Paraná, PR · Brazil",
   "hero.role": "Full Stack Developer. TypeScript, React and Node.js, from requirements to production.",
@@ -535,11 +589,18 @@ const EN = {
   "j3.b1": "Technical support for the civil engineering team and assistance with administrative processes.",
   "edu.role": "Systems Analysis and Development",
   "edu.kind": "Associate degree",
+  "sec.edu": "Education", "edu.time": "Course timeline",
+  "tcc.kind": "Final undergraduate project", "soon": "Coming soon",
+  "tcc.tag": "Mobile app for personal and couple expense management.",
+  "tcc.b1": "Transactions, reports, category spending limits with usage alerts, and WhatsApp-linked accounts.",
+  "tcc.b2": "Requirements and business rules specified before coding, with the rules in an isolated domain layer.",
+  "tcc.b3": "115 automated tests and CI with typecheck, lint and tests.",
   "sec.skills": "Skills",
   "l.pt": "Portuguese", "l.pt.v": "Native", "l.en": "English", "l.en.v": "Advanced · C1", "l.fr": "French", "l.fr.v": "Basic · A2",
   "cv": "Download resume", "c.h": "Let's talk", "c.copy": "Copy email", "c.foot": "Handmade."
 };
 const UI = { pt: { copied: "Copiado", copy: "Copiar e-mail" }, en: { copied: "Copied", copy: "Copy email" } };
+const copyBtn = document.getElementById("copy-email");
 
 const nodes = [...document.querySelectorAll("[data-i18n]")];
 const PT = new Map(nodes.map(n => [n, n.innerHTML]));
@@ -552,6 +613,7 @@ function apply(l, animate) {
   const run = () => {
     nodes.forEach(n => { const k = n.dataset.i18n; n.innerHTML = l === "en" && EN[k] != null ? EN[k] : PT.get(n); });
     renderSkills(l); setRail();
+    copyBtn.setAttribute("aria-label", UI[l].copy); copyBtn.setAttribute("title", UI[l].copy);
     document.querySelectorAll(".cv-link").forEach(a => a.setAttribute("href", l === "en" ? "cv/Resume_SamuelVendrame.pdf" : "cv/Curriculo_SamuelVendrame.pdf"));
     document.documentElement.lang = l === "en" ? "en" : "pt-BR";
     document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
@@ -605,9 +667,9 @@ apply(start, false);
     embers = Array.from({ length: Math.round(Math.min(60, Math.max(22, W * H / 26000))) }, () => ember(true));
   };
   const glint = (s) => {
-    ctx.beginPath(); ctx.moveTo(0, -s);
-    ctx.quadraticCurveTo(0, 0, s, 0); ctx.quadraticCurveTo(0, 0, 0, s);
-    ctx.quadraticCurveTo(0, 0, -s, 0); ctx.quadraticCurveTo(0, 0, 0, -s); ctx.fill();
+    ctx.beginPath();
+    for (let i = 0; i < 10; i++) { const r = i % 2 ? s * .4 : s, a = -Math.PI / 2 + i * Math.PI / 5; ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r); }
+    ctx.closePath(); ctx.fill();
   };
   const burst = (x, y, n) => { for (let i = 0; i < n; i++) { const a = Math.random() * 6.28, sp = 120 + Math.random() * 320;
     sparks.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 80, r: 1 + Math.random() * 2, life: .5 + Math.random() * .6, max: 1.1, acc: Math.random() < .8 }); } };
@@ -680,6 +742,14 @@ apply(start, false);
   if (still.matches) draw(0); else requestAnimationFrame(tick);
 })();
 
+// tempo de curso calculado pela data de hoje
+(() => {
+  const start = new Date(2025, 0, 1), end = new Date(2027, 6, 31);
+  const pct = Math.round(Math.min(1, Math.max(0, (Date.now() - start) / (end - start))) * 100);
+  document.getElementById("edu-pct").textContent = pct + "%";
+  requestAnimationFrame(() => requestAnimationFrame(() => { document.getElementById("edu-bar").style.width = pct + "%"; }));
+})();
+
 // tema: escuro por padrão (preto-cinza com roxo), claro com vermelho; a escolha fica salva
 const themeBtn = document.getElementById("theme-toggle");
 function setTheme(t, save) {
@@ -693,10 +763,9 @@ let startTheme = "dark";
 try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") startTheme = t; } catch (e) {}
 setTheme(startTheme, false);
 
-const copyBtn = document.getElementById("copy-email");
 copyBtn.addEventListener("click", () => {
   const el = document.getElementById("email"), email = el.textContent.trim();
-  const done = () => { copyBtn.textContent = UI[lang].copied; setTimeout(() => { copyBtn.textContent = UI[lang].copy; }, 1800); };
+  const done = () => { copyBtn.classList.add("ok"); copyBtn.setAttribute("aria-label", UI[lang].copied); setTimeout(() => { copyBtn.classList.remove("ok"); copyBtn.setAttribute("aria-label", UI[lang].copy); }, 1600); };
   const fallback = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
   try { navigator.clipboard.writeText(email).then(done, fallback); } catch (e) { fallback(); }
 });
