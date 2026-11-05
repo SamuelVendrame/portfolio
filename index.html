@@ -95,7 +95,9 @@ h1 .ln:nth-child(3) > span { animation-delay: .16s; }
 /* ---------- seções ---------- */
 .sec { padding-block: 104px 0; }
 .sec-h { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; border-bottom: 2px solid var(--ink); padding-bottom: 16px; }
-h2 { margin: 0; font-weight: 900; font-size: clamp(48px, 8vw, 112px); line-height: .85; letter-spacing: -.06em; color: var(--red); }
+h2 { margin: 0; font-weight: 900; font-size: clamp(48px, 8vw, 112px); line-height: .85; letter-spacing: -.06em; color: var(--ink); }
+h2::before { content: ""; display: inline-block; width: .4em; height: .4em; background: var(--red); margin-right: .16em; vertical-align: .02em; }
+.contact h2::before { background: var(--k); }
 .count { font-weight: 700; font-size: 15px; }
 .kind { font-weight: 700; font-size: 14px; color: var(--red); }
 .stack { font-size: 14px; font-weight: 500; color: var(--mute); }
