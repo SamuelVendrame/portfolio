@@ -526,7 +526,7 @@ h2 { margin: 0; font-weight: 900; font-size: clamp(28px, 3.6vw, 48px); line-heig
       <a href="https://github.com/SamuelVendrame" target="_blank" rel="noopener">GitHub ↗</a>
       <a class="cv-link" href="cv/Curriculo_SamuelVendrame.pdf" target="_blank" rel="noopener" download><span data-i18n="cv">Baixar currículo</span> ↓</a>
     </div>
-    <div class="foot"><span>Samuel Vendrame Bomfim · 2026</span><a class="totop" href="#inicio"><span data-i18n="c.foot">Voltar ao topo</span> ↑</a></div>
+    <div class="foot"><span>© <span id="year">2026</span> Samuel Vendrame Bomfim. <span data-i18n="rights">Todos os direitos reservados.</span></span><a class="totop" href="#inicio"><span data-i18n="c.foot">Voltar ao topo</span> ↑</a></div>
   </div>
 </footer>
 
@@ -624,7 +624,7 @@ const EN = {
   "tcc.b3": "115 automated tests and CI with typecheck, lint and tests.",
   "sec.skills": "Skills",
   "l.pt": "Portuguese", "l.pt.v": "Native", "l.en": "English", "l.en.v": "Advanced · C1", "l.fr": "French", "l.fr.v": "Basic · A2",
-  "cv": "Download resume", "c.h": "Let's talk", "c.copy": "Copy email", "c.foot": "Back to top"
+  "cv": "Download resume", "c.h": "Let's talk", "c.copy": "Copy email", "c.foot": "Back to top", "rights": "All rights reserved."
 };
 const UI = { pt: { copied: "Copiado", copy: "Copiar e-mail" }, en: { copied: "Copied", copy: "Copy email" } };
 const copyBtn = document.getElementById("copy-email");
@@ -776,6 +776,8 @@ apply(start, false);
   document.getElementById("edu-pct").textContent = pct + "%";
   requestAnimationFrame(() => requestAnimationFrame(() => { document.getElementById("edu-bar").style.width = pct + "%"; }));
 })();
+
+document.getElementById("year").textContent = Math.max(2026, new Date().getFullYear());
 
 // tema: escuro por padrão (preto-cinza com roxo), claro com vermelho; a escolha fica salva
 const themeBtn = document.getElementById("theme-toggle");
