@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -18,9 +18,9 @@
   --rail: 0px; --max: 1280px;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --paper:#0F0F0E; --ink:#F1F1EC; --red:#F0190C; --mute:#A3A39B; --grey:#1C1C1A; --rule:rgba(241,241,236,.16); color-scheme: dark; }
+  :root:not([data-theme="light"]) { --paper:#121214; --ink:#EDEBF2; --red:#9461FF; --mute:#A09DAA; --grey:#1E1D23; --rule:rgba(237,235,242,.14); --k:#0B0B0D; color-scheme: dark; }
 }
-:root[data-theme="dark"] { --paper:#0F0F0E; --ink:#F1F1EC; --red:#F0190C; --mute:#A3A39B; --grey:#1C1C1A; --rule:rgba(241,241,236,.16); color-scheme: dark; }
+:root[data-theme="dark"] { --paper:#121214; --ink:#EDEBF2; --red:#9461FF; --mute:#A09DAA; --grey:#1E1D23; --rule:rgba(237,235,242,.14); --k:#0B0B0D; color-scheme: dark; }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -52,7 +52,14 @@ a { color: inherit; }
 .nav a { font-size: 15px; font-weight: 600; text-decoration: none; position: relative; padding-block: 4px; }
 .nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
 .nav a:hover::after { transform: scaleX(1); }
+.theme { width: 38px; height: 34px; display: grid; place-items: center; border: 2px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; transition: background-color .2s, color .2s; }
+.theme:hover { background: var(--red); border-color: var(--red); color: var(--w); }
+.theme svg { width: 18px; height: 18px; }
+.theme .sun { display: none; }
+:root[data-theme="dark"] .theme .sun { display: block; }
+:root[data-theme="dark"] .theme .moon { display: none; }
 .lang { display: flex; border: 2px solid var(--ink); }
+@media (max-width: 760px) { .top .wrap { gap: 10px; } .mark { font-size: 14px; letter-spacing: -.03em; min-width: 0; } .theme { margin-left: auto; } .theme + .lang { margin-left: 0; } .lang button { padding: 8px 9px; } }
 .lang button { font: 800 13px/1 var(--f); letter-spacing: .04em; padding: 8px 12px; border: 0; background: transparent; color: var(--ink); cursor: pointer; transition: background-color .2s, color .2s; }
 .lang button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 .lang button:not([aria-pressed="true"]):hover { background: var(--red); color: var(--w); }
@@ -136,8 +143,8 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
 .cv small { font-weight: 700; font-size: clamp(6px, .8vw, 10px); letter-spacing: .06em; text-transform: uppercase; position: relative; }
 .cv strong { font-weight: 900; font-size: clamp(11px, 1.7vw, 22px); line-height: .95; letter-spacing: -.04em; position: relative; }
 .cv1 { background: #111; color: #FAFAF7; }
-.cv1::before { content: ""; position: absolute; width: 70%; aspect-ratio: 1; border-radius: 50%; background: #E10600; right: -18%; top: 22%; }
-.cv2 { background: #E10600; color: #fff; transform: translateY(-6%); }
+.cv1::before { content: ""; position: absolute; width: 70%; aspect-ratio: 1; border-radius: 50%; background: var(--red); right: -18%; top: 22%; }
+.cv2 { background: var(--red); color: #fff; transform: translateY(-6%); }
 .cv2::before { content: ""; position: absolute; left: 12%; right: 12%; top: 34%; height: 30%; border: 2px solid #fff; }
 .cv3 { background: #FAFAF7; color: #111; border: 1px solid rgba(17,17,17,.2); }
 .cv3::before { content: ""; position: absolute; left: 0; right: 0; top: 40%; height: 22%; background: repeating-linear-gradient(0deg, #111 0 2px, transparent 2px 7px); }
@@ -228,6 +235,7 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
       <a href="#competencias" data-i18n="nav.skills">Competências</a>
       <a href="#contato" data-i18n="nav.contact">Contato</a>
     </nav>
+    <button class="theme" id="theme-toggle" type="button" aria-label="Alternar tema claro e escuro"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.5 14.4A8.5 8.5 0 0 1 9.6 3.5a8.5 8.5 0 1 0 10.9 10.9z"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor"/><g stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></g></svg></button>
     <div class="lang" role="group" aria-label="Idioma / Language">
       <button id="lang-pt" type="button" data-lang="pt" aria-pressed="true">PT</button>
       <button id="lang-en" type="button" data-lang="en" aria-pressed="false">EN</button>
@@ -248,6 +256,8 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
     <p class="sum" data-i18n="hero.sum">Hoje desenvolvo os sistemas da Livreria – Magna Opera, incluindo o ERP da empresa. Antes, entreguei dois sistemas em domínio .gov.br para a Prefeitura de São Manoel do Paraná. Trabalho com especificação antes do código, testes automatizados e IA como parte do processo.</p>
     <div class="ctas">
       <a class="btn solid" href="#projetos"><span data-i18n="hero.cta1">Ver projetos</span><span class="ar">↘</span></a>
+      <a class="btn" href="cv/Curriculo_SamuelVendrame.pdf" target="_blank" rel="noopener" download>Currículo PT <span class="ar">↓</span></a>
+      <a class="btn" href="cv/Resume_SamuelVendrame.pdf" target="_blank" rel="noopener" download>Resume EN <span class="ar">↓</span></a>
       <a class="btn" href="https://www.linkedin.com/in/samuelvendrame" target="_blank" rel="noopener">LinkedIn <span class="ar">↗</span></a>
       <a class="btn" href="https://github.com/SamuelVendrame" target="_blank" rel="noopener">GitHub <span class="ar">↗</span></a>
     </div>
@@ -432,6 +442,8 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
     <div class="links">
       <a href="https://www.linkedin.com/in/samuelvendrame" target="_blank" rel="noopener">LinkedIn ↗</a>
       <a href="https://github.com/SamuelVendrame" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="cv/Curriculo_SamuelVendrame.pdf" target="_blank" rel="noopener" download>Currículo PT ↓</a>
+      <a href="cv/Resume_SamuelVendrame.pdf" target="_blank" rel="noopener" download>Resume EN ↓</a>
     </div>
     <div class="foot"><span>Samuel Vendrame Bomfim · 2026</span><span data-i18n="c.foot">Feito à mão, em vermelho e branco.</span></div>
   </div>
@@ -566,7 +578,9 @@ apply(start, false);
   const cv = document.getElementById("bubbles"), ctx = cv.getContext("2d");
   const still = matchMedia("(prefers-reduced-motion: reduce)");
   let W = 0, H = 0, dpr = 1, red = "#E10600", ink = "#111", items = [], sparks = [], mx = -9999, my = -9999, last = 0;
-  const readColors = () => { const cs = getComputedStyle(document.documentElement); red = cs.getPropertyValue("--red").trim() || red; ink = cs.getPropertyValue("--ink").trim() || ink; };
+  let boost = 1;
+  const readColors = () => { const cs = getComputedStyle(document.documentElement); red = cs.getPropertyValue("--red").trim() || red; ink = cs.getPropertyValue("--ink").trim() || ink; boost = cs.getPropertyValue("color-scheme").includes("dark") ? 1.25 : 1; if (still.matches) draw(0); };
+  window.refreshBubbles = readColors;
   const make = (anywhere) => {
     const r = 6 + Math.pow(Math.random(), 2.2) * (W < 700 ? 60 : 110);
     return { r, x: Math.random() * W, y: anywhere ? Math.random() * H : H + r + Math.random() * 120,
@@ -589,7 +603,7 @@ apply(start, false);
     ctx.clearRect(0, 0, W, H);
     for (const b of items) {
       const x = b.x + Math.sin(t / 1000 * .6 + b.ph) * b.sw + b.ox, y = b.y + b.oy;
-      ctx.globalAlpha = b.a;
+      ctx.globalAlpha = Math.min(1, b.a * (b.kind === "ring" && boost > 1 ? .55 : boost));
       ctx.beginPath(); ctx.arc(x, y, b.r, 0, Math.PI * 2);
       if (b.kind === "fill") { ctx.fillStyle = red; ctx.fill(); }
       else { ctx.lineWidth = Math.max(1.5, b.r * .06); ctx.strokeStyle = ink; ctx.stroke(); }
@@ -597,7 +611,7 @@ apply(start, false);
     ctx.lineCap = "round";
     for (const s of sparks) {
       const fade = s.life === Infinity ? .35 + .45 * Math.abs(Math.sin(t / 1000 * 9 + s.ph)) : Math.max(0, s.life / s.max);
-      ctx.globalAlpha = fade; ctx.strokeStyle = ctx.fillStyle = s.red ? red : ink;
+      ctx.globalAlpha = Math.min(1, fade * (boost > 1 ? 1.2 : 1)); ctx.strokeStyle = ctx.fillStyle = s.red ? red : ink;
       ctx.lineWidth = s.r; ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(s.x - s.vx * .035, s.y - s.vy * .035); ctx.stroke();
       ctx.beginPath(); ctx.arc(s.x, s.y, s.r * .9, 0, Math.PI * 2); ctx.fill();
     }
@@ -634,6 +648,19 @@ apply(start, false);
   readColors(); resize();
   if (still.matches) draw(0); else requestAnimationFrame(tick);
 })();
+
+// tema: escuro por padrão (preto-cinza com roxo), claro com vermelho; a escolha fica salva
+const themeBtn = document.getElementById("theme-toggle");
+function setTheme(t, save) {
+  document.documentElement.setAttribute("data-theme", t);
+  themeBtn.setAttribute("aria-pressed", String(t === "dark"));
+  if (save) { try { localStorage.setItem("theme", t); } catch (e) {} }
+  if (window.refreshBubbles) window.refreshBubbles();
+}
+themeBtn.addEventListener("click", () => setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark", true));
+let startTheme = "dark";
+try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") startTheme = t; } catch (e) {}
+setTheme(startTheme, false);
 
 const copyBtn = document.getElementById("copy-email");
 copyBtn.addEventListener("click", () => {
