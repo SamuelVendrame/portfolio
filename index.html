@@ -274,6 +274,27 @@ h2 { margin: 0; font-weight: 900; font-size: clamp(28px, 3.6vw, 48px); line-heig
 .chip .mg { border-radius: 4px; }
 .sq-list li::before { border-radius: 2px; }
 .cv { border-radius: 4px; }
+
+/* responsivo */
+@media (max-width: 1080px) { .nav { gap: 18px; } .nav a { font-size: 13px; } }
+@media (max-width: 960px) { .nav { display: none; } .theme { margin-left: auto; } }
+@media (max-width: 900px) {
+  .frame { margin-left: 8px; }
+  .frame .in { transform: translate(-8px, -8px); }
+  .proj:hover .frame .in { transform: translate(-8px, -8px); }
+  .orb { width: 34vw; max-width: 200px; right: 2vw; top: 18px; opacity: 1; }
+  .hero .kick { padding-right: 34vw; }
+  .tcc { padding: 20px; }
+}
+@media (max-width: 560px) {
+  .orb { width: 26vw; top: 14px; right: 3vw; }
+  .hero .kick { padding-right: 24vw; flex-direction: column; gap: 4px; }
+  .ctas .btn { flex: 1 1 auto; justify-content: center; }
+}
+/* telas grandes (QHD, 4K): aumenta o conteúdo todo na mesma proporção */
+@media (min-width: 1800px) { .top, main, .contact { zoom: 1.2; } }
+@media (min-width: 2300px) { .top, main, .contact { zoom: 1.45; } }
+@media (min-width: 3200px) { .top, main, .contact { zoom: 1.9; } }
 </style>
 </head>
 <body>
