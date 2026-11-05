@@ -66,7 +66,7 @@ a { color: inherit; }
 .contact :focus-visible { outline-color: var(--w); }
 @media (max-width: 760px) { .nav { display: none; } .lang { margin-left: auto; } }
 
-/* ---------- bolhas de fundo ---------- */
+/* ---------- céu de estrelas ao fundo ---------- */
 #bubbles { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 .top, main, .contact { position: relative; z-index: 1; }
 .top { z-index: 20; }
@@ -256,8 +256,7 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
     <p class="sum" data-i18n="hero.sum">Hoje desenvolvo os sistemas da Livreria – Magna Opera, incluindo o ERP da empresa. Antes, entreguei dois sistemas em domínio .gov.br para a Prefeitura de São Manoel do Paraná. Trabalho com especificação antes do código, testes automatizados e IA como parte do processo.</p>
     <div class="ctas">
       <a class="btn solid" href="#projetos"><span data-i18n="hero.cta1">Ver projetos</span><span class="ar">↘</span></a>
-      <a class="btn" href="cv/Curriculo_SamuelVendrame.pdf" target="_blank" rel="noopener" download>Currículo PT <span class="ar">↓</span></a>
-      <a class="btn" href="cv/Resume_SamuelVendrame.pdf" target="_blank" rel="noopener" download>Resume EN <span class="ar">↓</span></a>
+      <a class="btn cv-link" href="cv/Curriculo_SamuelVendrame.pdf" target="_blank" rel="noopener" download><span data-i18n="cv">Baixar currículo</span> <span class="ar">↓</span></a>
       <a class="btn" href="https://www.linkedin.com/in/samuelvendrame" target="_blank" rel="noopener">LinkedIn <span class="ar">↗</span></a>
       <a class="btn" href="https://github.com/SamuelVendrame" target="_blank" rel="noopener">GitHub <span class="ar">↗</span></a>
     </div>
@@ -442,8 +441,7 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
     <div class="links">
       <a href="https://www.linkedin.com/in/samuelvendrame" target="_blank" rel="noopener">LinkedIn ↗</a>
       <a href="https://github.com/SamuelVendrame" target="_blank" rel="noopener">GitHub ↗</a>
-      <a href="cv/Curriculo_SamuelVendrame.pdf" target="_blank" rel="noopener" download>Currículo PT ↓</a>
-      <a href="cv/Resume_SamuelVendrame.pdf" target="_blank" rel="noopener" download>Resume EN ↓</a>
+      <a class="cv-link" href="cv/Curriculo_SamuelVendrame.pdf" target="_blank" rel="noopener" download><span data-i18n="cv">Baixar currículo</span> ↓</a>
     </div>
     <div class="foot"><span>Samuel Vendrame Bomfim · 2026</span><span data-i18n="c.foot">Feito à mão, em vermelho e branco.</span></div>
   </div>
@@ -533,7 +531,7 @@ const EN = {
   "edu.kind": "Associate degree",
   "sec.skills": "Skills",
   "l.pt": "Portuguese", "l.pt.v": "Native", "l.en": "English", "l.en.v": "Advanced · C1", "l.fr": "French", "l.fr.v": "Basic · A2",
-  "c.h": "Let's talk", "c.copy": "Copy email", "c.foot": "Handmade, in red and white."
+  "cv": "Download resume", "c.h": "Let's talk", "c.copy": "Copy email", "c.foot": "Handmade, in red and white."
 };
 const UI = { pt: { copied: "Copiado", copy: "Copiar e-mail" }, en: { copied: "Copied", copy: "Copy email" } };
 
@@ -548,6 +546,7 @@ function apply(l, animate) {
   const run = () => {
     nodes.forEach(n => { const k = n.dataset.i18n; n.innerHTML = l === "en" && EN[k] != null ? EN[k] : PT.get(n); });
     renderSkills(l); setRail();
+    document.querySelectorAll(".cv-link").forEach(a => a.setAttribute("href", l === "en" ? "cv/Resume_SamuelVendrame.pdf" : "cv/Curriculo_SamuelVendrame.pdf"));
     document.documentElement.lang = l === "en" ? "en" : "pt-BR";
     document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
     document.body.classList.remove("swapping");
@@ -573,79 +572,91 @@ let start = "pt";
 try { const s = localStorage.getItem("lang"); if (s === "pt" || s === "en") start = s; else if (!/^pt/i.test(navigator.language || "")) start = "en"; } catch (e) {}
 apply(start, false);
 
-// bolhas e faíscas que sobem do fundo; bolhas desviam do mouse, clique solta um estouro de faíscas
+// céu de estrelas: pontos que piscam, algumas estrelas de quatro pontas na cor de destaque,
+// estrelas cadentes de vez em quando; perto do mouse elas brilham mais; clique solta faíscas
 (() => {
   const cv = document.getElementById("bubbles"), ctx = cv.getContext("2d");
   const still = matchMedia("(prefers-reduced-motion: reduce)");
-  let W = 0, H = 0, dpr = 1, red = "#E10600", ink = "#111", items = [], sparks = [], mx = -9999, my = -9999, last = 0;
-  let boost = 1;
-  const readColors = () => { const cs = getComputedStyle(document.documentElement); red = cs.getPropertyValue("--red").trim() || red; ink = cs.getPropertyValue("--ink").trim() || ink; boost = cs.getPropertyValue("color-scheme").includes("dark") ? 1.25 : 1; if (still.matches) draw(0); };
-  window.refreshBubbles = readColors;
-  const make = (anywhere) => {
-    const r = 6 + Math.pow(Math.random(), 2.2) * (W < 700 ? 60 : 110);
-    return { r, x: Math.random() * W, y: anywhere ? Math.random() * H : H + r + Math.random() * 120,
-      v: 12 + Math.random() * 28 + (60 - Math.min(r, 60)) * .35, ph: Math.random() * 6.28, sw: 6 + Math.random() * 18,
-      kind: Math.random() < .62 ? "fill" : "ring", a: .07 + Math.random() * .16, ox: 0, oy: 0 };
+  let W = 0, H = 0, dpr = 1, red = "#E10600", ink = "#111", dark = false;
+  let stars = [], glints = [], comets = [], sparks = [], mx = -9999, my = -9999, last = 0, nextComet = 2;
+  const readColors = () => {
+    const cs = getComputedStyle(document.documentElement);
+    red = cs.getPropertyValue("--red").trim() || red; ink = cs.getPropertyValue("--ink").trim() || ink;
+    dark = cs.getPropertyValue("color-scheme").includes("dark");
+    if (still.matches) draw(0);
   };
-  // faísca: ponto pequeno que sobe rápido, pisca e deixa um rastro curto
-  const ember = (anywhere) => ({ x: Math.random() * W, y: anywhere ? Math.random() * H : H + 10, vx: 0, vy: -(70 + Math.random() * 110),
-    r: .9 + Math.random() * 1.8, ph: Math.random() * 6.28, life: Infinity, red: Math.random() < .75 });
-  const burst = (x, y, n) => { for (let i = 0; i < n; i++) { const a = Math.random() * 6.28, sp = 120 + Math.random() * 320;
-    sparks.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 80, r: 1 + Math.random() * 2, ph: 0, life: .5 + Math.random() * .6, max: 1.1, red: Math.random() < .8 }); } };
+  window.refreshBubbles = readColors;
   const resize = () => {
     dpr = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
     cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const n = Math.round(Math.min(26, Math.max(12, W * H / 52000)));
-    items = Array.from({ length: n }, () => make(true));
-    sparks = Array.from({ length: Math.round(n * .8) }, () => ember(true));
+    const n = Math.round(Math.min(380, Math.max(120, W * H / 2800)));
+    stars = Array.from({ length: n }, () => ({ x: Math.random() * W, y: Math.random() * H, r: .35 + Math.pow(Math.random(), 3) * 1.6,
+      a: .25 + Math.random() * .6, sp: .6 + Math.random() * 2.4, ph: Math.random() * 6.28, z: .15 + Math.random() * .85, acc: Math.random() < .12 }));
+    glints = Array.from({ length: Math.round(Math.min(14, Math.max(6, W / 110))) }, () => ({ x: Math.random() * W, y: Math.random() * H,
+      s: 4 + Math.random() * 7, sp: .4 + Math.random() * 1.2, ph: Math.random() * 6.28, rot: Math.random() * .8, z: .3 + Math.random() * .7 }));
   };
+  const glint = (x, y, s) => {
+    ctx.beginPath(); ctx.moveTo(x, y - s);
+    ctx.quadraticCurveTo(x, y, x + s, y); ctx.quadraticCurveTo(x, y, x, y + s);
+    ctx.quadraticCurveTo(x, y, x - s, y); ctx.quadraticCurveTo(x, y, x, y - s); ctx.fill();
+  };
+  const burst = (x, y, n) => { for (let i = 0; i < n; i++) { const a = Math.random() * 6.28, sp = 120 + Math.random() * 320;
+    sparks.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 80, r: 1 + Math.random() * 2, life: .5 + Math.random() * .6, max: 1.1, acc: Math.random() < .8 }); } };
   const draw = (t) => {
+    const ts = t / 1000, sy = scrollY * .12, k = dark ? 1 : .8;
     ctx.clearRect(0, 0, W, H);
-    for (const b of items) {
-      const x = b.x + Math.sin(t / 1000 * .6 + b.ph) * b.sw + b.ox, y = b.y + b.oy;
-      ctx.globalAlpha = Math.min(1, b.a * (b.kind === "ring" && boost > 1 ? .55 : boost));
-      ctx.beginPath(); ctx.arc(x, y, b.r, 0, Math.PI * 2);
-      if (b.kind === "fill") { ctx.fillStyle = red; ctx.fill(); }
-      else { ctx.lineWidth = Math.max(1.5, b.r * .06); ctx.strokeStyle = ink; ctx.stroke(); }
+    for (const s of stars) {
+      const y = ((s.y - sy * s.z) % H + H) % H;
+      const near = Math.max(0, 1 - Math.hypot(s.x - mx, y - my) / 160);
+      const tw = .55 + .45 * Math.sin(ts * s.sp + s.ph);
+      ctx.globalAlpha = Math.min(1, (s.a * tw + near * .7) * k);
+      ctx.fillStyle = s.acc ? red : ink;
+      const r = s.r * (1 + near * 1.2);
+      if (r < 1.1) ctx.fillRect(s.x - r, y - r, r * 2, r * 2);
+      else { ctx.beginPath(); ctx.arc(s.x, y, r, 0, 6.283); ctx.fill(); }
+    }
+    ctx.fillStyle = red;
+    for (const g of glints) {
+      const y = ((g.y - sy * g.z) % H + H) % H, tw = .5 + .5 * Math.sin(ts * g.sp + g.ph);
+      ctx.globalAlpha = (.35 + .6 * tw) * k;
+      ctx.save(); ctx.translate(g.x, y); ctx.rotate(g.rot + ts * .15); glint(0, 0, g.s * (.6 + .5 * tw)); ctx.restore();
     }
     ctx.lineCap = "round";
+    for (const c of comets) {
+      const fade = Math.min(1, c.life / .4);
+      ctx.globalAlpha = fade * (dark ? .9 : .7); ctx.strokeStyle = c.acc ? red : ink; ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.moveTo(c.x, c.y); ctx.lineTo(c.x - c.vx * .12, c.y - c.vy * .12); ctx.stroke();
+      ctx.fillStyle = c.acc ? red : ink; ctx.beginPath(); ctx.arc(c.x, c.y, 1.8, 0, 6.283); ctx.fill();
+    }
     for (const s of sparks) {
-      const fade = s.life === Infinity ? .35 + .45 * Math.abs(Math.sin(t / 1000 * 9 + s.ph)) : Math.max(0, s.life / s.max);
-      ctx.globalAlpha = Math.min(1, fade * (boost > 1 ? 1.2 : 1)); ctx.strokeStyle = ctx.fillStyle = s.red ? red : ink;
-      ctx.lineWidth = s.r; ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(s.x - s.vx * .035, s.y - s.vy * .035); ctx.stroke();
-      ctx.beginPath(); ctx.arc(s.x, s.y, s.r * .9, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = Math.max(0, s.life / s.max); ctx.strokeStyle = ctx.fillStyle = s.acc ? red : ink; ctx.lineWidth = s.r;
+      ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(s.x - s.vx * .035, s.y - s.vy * .035); ctx.stroke();
     }
     ctx.globalAlpha = 1;
   };
   const tick = (t) => {
     const dt = Math.min(.05, (t - (last || t)) / 1000); last = t;
-    for (let i = 0; i < items.length; i++) {
-      const b = items[i];
-      b.y -= b.v * dt;
-      const dx = b.x + b.ox - mx, dy = b.y + b.oy - my, d = Math.hypot(dx, dy), reach = b.r + 120;
-      if (d < reach && d > 0) { const f = (1 - d / reach) * 90 * dt * 6; b.ox += dx / d * f; b.oy += dy / d * f; }
-      b.ox *= .96; b.oy *= .96;
-      if (b.y + b.r < -20) items[i] = make(false);
+    nextComet -= dt;
+    if (nextComet <= 0) {
+      const a = Math.PI * (.12 + Math.random() * .14), sp = 700 + Math.random() * 500, fromLeft = Math.random() < .5;
+      comets.push({ x: fromLeft ? Math.random() * W * .5 : W * .5 + Math.random() * W * .5, y: Math.random() * H * .35,
+        vx: (fromLeft ? 1 : -1) * Math.cos(a) * sp, vy: Math.sin(a) * sp, life: .7 + Math.random() * .5, acc: Math.random() < .6 });
+      nextComet = 3 + Math.random() * 5;
     }
-    for (let i = sparks.length - 1; i >= 0; i--) {
-      const s = sparks[i];
-      if (s.life === Infinity) { s.vx = Math.sin(t / 1000 * 3 + s.ph) * 30; }
-      else { s.vy += 420 * dt; s.vx *= .985; s.life -= dt; }
-      s.x += s.vx * dt; s.y += s.vy * dt;
-      if (s.life <= 0) sparks.splice(i, 1);
-      else if (s.life === Infinity && s.y < -10) { sparks[i] = ember(false); if (Math.random() < .08) burst(sparks[i].x, H * (.2 + Math.random() * .6), 6); }
-    }
+    for (let i = comets.length - 1; i >= 0; i--) { const c = comets[i]; c.x += c.vx * dt; c.y += c.vy * dt; c.life -= dt; if (c.life <= 0) comets.splice(i, 1); }
+    for (let i = sparks.length - 1; i >= 0; i--) { const s = sparks[i]; s.vy += 420 * dt; s.vx *= .985; s.life -= dt; s.x += s.vx * dt; s.y += s.vy * dt; if (s.life <= 0) sparks.splice(i, 1); }
     draw(t);
     if (!still.matches && !document.hidden) requestAnimationFrame(tick); else last = 0;
   };
   addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY; }, { passive: true });
-  addEventListener("pointerleave", () => { mx = my = -9999; });
+  document.addEventListener("pointerleave", () => { mx = my = -9999; });
   addEventListener("pointerdown", e => { if (!still.matches && !e.target.closest("a, button")) burst(e.clientX, e.clientY, 18); }, { passive: true });
   addEventListener("resize", () => { resize(); if (still.matches) draw(0); });
+  addEventListener("scroll", () => { if (still.matches) draw(0); }, { passive: true });
   document.addEventListener("visibilitychange", () => { if (!document.hidden && !still.matches) requestAnimationFrame(tick); });
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", readColors);
   still.addEventListener("change", () => { if (!still.matches) requestAnimationFrame(tick); });
-  readColors(); resize();
+  resize(); readColors();
   if (still.matches) draw(0); else requestAnimationFrame(tick);
 })();
 
