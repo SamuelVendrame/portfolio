@@ -105,10 +105,12 @@ h1 .ln:nth-child(3) > span { animation-delay: .16s; }
 .btn:hover .ar { transform: translate(3px, -3px); }
 
 .facts { margin-top: 56px; border-top: 2px solid var(--ink); position: relative; z-index: 1; }
-.fact { display: grid; grid-template-columns: minmax(120px, 3fr) 9fr; gap: 24px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--rule); }
-.fact:last-child { border-bottom: 0; padding-bottom: 36px; }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.fact { padding: 22px 28px 30px; border-left: 1px solid var(--rule); min-width: 0; }
+.fact:first-child { border-left: 0; padding-left: 0; }
+.fact h4 { margin: 12px 0 6px; font-size: 16px; font-weight: 800; letter-spacing: -.015em; line-height: 1.25; }
 .fact b { font-size: clamp(34px, 4.2vw, 58px); line-height: .9; font-weight: 900; letter-spacing: -.055em; color: var(--red); font-variant-numeric: tabular-nums; }
-.fact p { margin: 0; font-size: clamp(15px, 1.3vw, 18px); font-weight: 500; line-height: 1.35; max-width: 48ch; }
+.fact p { margin: 0; font-size: 14px; font-weight: 400; line-height: 1.5; color: var(--mute); max-width: 40ch; }
 
 /* ---------- seções ---------- */
 .sec { padding-block: 84px 0; }
@@ -239,7 +241,7 @@ h2 { margin: 0; font-weight: 900; font-size: clamp(28px, 3.6vw, 48px); line-heig
 .contact .links a:hover { background: var(--w); color: var(--red); }
 .foot { margin-top: 64px; padding-top: 16px; border-top: 2px solid var(--k); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 13px; font-weight: 600; }
 
-@media (max-width: 900px) {
+@media (max-width: 720px) {
   .course, .tcc { grid-column: 1 / -1; }
   .tcc { margin-top: 32px; }
   h1, .hero .role, .hero .sum, .proj .txt, .proj .pic, .job .when, .job .what, .skg h3, .chips { grid-column: 1 / -1; }
@@ -252,7 +254,9 @@ h2 { margin: 0; font-weight: 900; font-size: clamp(28px, 3.6vw, 48px); line-heig
 @media (max-width: 560px) {
   .sys { grid-template-columns: 1fr; }
   .sec { padding-top: 80px; }
-  .fact { grid-template-columns: 1fr; gap: 6px; }
+  .facts { grid-template-columns: 1fr; }
+  .fact, .fact:first-child { border-left: 0; padding: 18px 0 20px; border-bottom: 1px solid var(--rule); }
+  .fact:last-child { border-bottom: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
@@ -276,9 +280,9 @@ h2 { margin: 0; font-weight: 900; font-size: clamp(28px, 3.6vw, 48px); line-heig
 .cv { border-radius: 4px; }
 
 /* responsivo */
-@media (max-width: 1080px) { .nav { gap: 18px; } .nav a { font-size: 13px; } }
-@media (max-width: 960px) { .nav { display: none; } .theme { margin-left: auto; } }
-@media (max-width: 900px) {
+@media (max-width: 1080px) { .nav { gap: 16px; } .nav a { font-size: 13px; } }
+@media (max-width: 860px) { .nav { display: none; } .theme { margin-left: auto; } }
+@media (max-width: 720px) {
   .frame { margin-left: 8px; }
   .frame .in { transform: translate(-8px, -8px); }
   .proj:hover .frame .in { transform: translate(-8px, -8px); }
@@ -336,9 +340,9 @@ h2 { margin: 0; font-weight: 900; font-size: clamp(28px, 3.6vw, 48px); line-heig
       <a class="btn" href="https://github.com/SamuelVendrame" target="_blank" rel="noopener">GitHub <span class="ar">↗</span></a>
     </div>
     <div class="facts" style="grid-column: 1 / -1">
-      <div class="fact"><b>2</b><p data-i18n="f1">sistemas web no ar em domínio .gov.br, feitos para a Prefeitura de São Manoel do Paraná. Levantei os requisitos direto com os servidores de cada setor, e os dois estão abertos ao público.</p></div>
-      <div class="fact"><b>840+</b><p data-i18n="f2">registros do cemitério municipal saíram das fichas de papel para um sistema com cadastro, busca e um mapa interativo que ajuda visitantes a encontrar jazigos.</p></div>
-      <div class="fact"><b>115</b><p data-i18n="f3">testes automatizados no Finova, meu TCC: um app de finanças pessoais e de casal com as regras de negócio isoladas numa camada própria e CI rodando typecheck, lint e testes.</p></div>
+      <div class="fact"><b>2</b><h4 data-i18n="f1t">sistemas .gov.br em produção</h4><p data-i18n="f1">Feitos para a Prefeitura de São Manoel do Paraná, com requisitos levantados direto com os servidores de cada setor. Os dois estão abertos ao público.</p></div>
+      <div class="fact"><b>840+</b><h4 data-i18n="f2t">registros fora do papel</h4><p data-i18n="f2">O cemitério municipal trocou as fichas de papel por um sistema com cadastro, busca e um mapa interativo para encontrar jazigos.</p></div>
+      <div class="fact"><b>115</b><h4 data-i18n="f3t">testes automatizados no TCC</h4><p data-i18n="f3">O Finova, app de finanças pessoais e de casal, tem as regras de negócio numa camada própria e CI rodando typecheck, lint e testes.</p></div>
     </div>
   </div>
 </section>
@@ -442,9 +446,9 @@ h2 { margin: 0; font-weight: 900; font-size: clamp(28px, 3.6vw, 48px); line-heig
         <p class="org"><span>Livreria – Magna Opera</span> · <span data-i18n="remote">Remoto</span></p>
         <ul class="sq-list">
           <li data-i18n="j1.b1">Desenvolvimento e manutenção dos sistemas da empresa, incluindo o ERP, da análise das demandas à entrega em produção.</li>
-          <li data-i18n="j1.b2">Criei um fluxo próprio de engenharia: especificação e execução com GSD, um agente que confere escopo e regras de negócio, roteiros de teste manual e validação final.</li>
-          <li data-i18n="j1.b3">Otimização de queries MySQL e correção de erros em produção identificados com o Sentry.</li>
-          <li data-i18n="j1.b4">Integrações do ERP com automações de IA no n8n e protótipos de tela validados com a gestão.</li>
+          <li data-i18n="j1.b2">Melhorias de desempenho e estabilidade, com monitoramento e correção de erros em produção.</li>
+          <li data-i18n="j1.b3">Automações e integrações com IA para agilizar processos internos da equipe.</li>
+          <li data-i18n="j1.b4">Prototipação de telas e validação com a gestão para melhorar a usabilidade do sistema.</li>
         </ul>
         <div class="stack">Next.js / Node.js / MySQL / Docker / Sentry / Linear / n8n</div>
       </div>
@@ -511,9 +515,9 @@ h2 { margin: 0; font-weight: 900; font-size: clamp(28px, 3.6vw, 48px); line-heig
         <h3>Finova</h3>
         <p class="tag" data-i18n="tcc.tag">App mobile de gestão de gastos individuais e de casal.</p>
         <ul class="sq-list">
-          <li data-i18n="tcc.b1">Lançamentos, relatórios, tetos por categoria com alertas de consumo e conta vinculada ao WhatsApp.</li>
-          <li data-i18n="tcc.b2">Requisitos e regras de negócio especificados antes do código, com as regras numa camada de domínio isolada.</li>
-          <li data-i18n="tcc.b3">115 testes automatizados e CI com typecheck, lint e testes.</li>
+          <li data-i18n="tcc.b1">Gastos individuais e do casal no mesmo app, com lançamentos e relatórios que mostram para onde o dinheiro está indo.</li>
+          <li data-i18n="tcc.b2">Tetos de gasto por categoria, com alertas quando o consumo começa a chegar perto do limite.</li>
+          <li data-i18n="tcc.b3">Conta vinculada ao WhatsApp, levando o app para um canal que as pessoas já usam todo dia.</li>
         </ul>
         <div class="stack">React Native / Expo / TypeScript / Jest / Testing Library / GitHub Actions</div>
         <div class="tcc-ph" aria-hidden="true"><span data-i18n="soon">Em breve</span></div>
@@ -585,9 +589,9 @@ const EN = {
   "hero.role": "Full Stack Developer. TypeScript, React and Node.js, from requirements to production.",
   "hero.sum": "I currently build the systems of Livreria – Magna Opera, including the company's ERP. Before that, I delivered two systems on .gov.br domains for the São Manoel do Paraná City Hall. I write specs before code, rely on automated tests, and use AI as part of the process.",
   "hero.cta1": "See projects",
-  "f1": "live web systems on .gov.br domains, built for the São Manoel do Paraná City Hall. I gathered requirements directly with staff from each department, and both are open to the public.",
-  "f2": "municipal cemetery records moved from paper files to a system with registration, search and an interactive map that helps visitors find graves.",
-  "f3": "automated tests in Finova, my final project: a personal and couple finance app with business rules isolated in their own layer and CI running typecheck, lint and tests.",
+  "f1t": "live .gov.br systems", "f1": "Built for the São Manoel do Paraná City Hall, with requirements gathered directly with staff from each department. Both are open to the public.",
+  "f2t": "records off paper", "f2": "The municipal cemetery swapped paper files for a system with registration, search and an interactive map to find graves.",
+  "f3t": "automated tests in my final project", "f3": "Finova, a personal and couple finance app, keeps business rules in their own layer, with CI running typecheck, lint and tests.",
   "sec.proj": "Projects", "sec.proj.n": "4 selected",
   "priv": "Private code", "open": "Open the app", "demo": "View demo",
   "p1.kind": "Web + mobile · AI",
@@ -621,9 +625,9 @@ const EN = {
   "cityhall": "São Manoel do Paraná City Hall",
   "j1.role": "Full Stack Developer",
   "j1.b1": "Development and maintenance of the company's systems, including the ERP, from requirements analysis to production delivery.",
-  "j1.b2": "Designed my own engineering workflow: specification and execution with GSD, an agent that checks scope and business rules, manual test scripts and final validation.",
-  "j1.b3": "Optimized MySQL queries and fixed production errors identified through Sentry.",
-  "j1.b4": "ERP integrations with AI automations in n8n, and screen prototypes validated with management.",
+  "j1.b2": "Performance and stability improvements, with monitoring and fixing of production errors.",
+  "j1.b3": "AI-powered automations and integrations to speed up the team's internal processes.",
+  "j1.b4": "Screen prototyping and validation with management to improve the system's usability.",
   "j2.role": "Full Stack Developer Intern",
   "j2.b1": "Two web systems deployed to production, with requirements gathered directly from public administration departments.",
   "avalie": "Rating platform for municipal public services, with a metrics dashboard. An AI pipeline moderates comments in real time and summarizes ratings with sentiment analysis. Layered API with automated tests and personal data handling compliant with LGPD.",
@@ -640,9 +644,9 @@ const EN = {
   "edu.b4": "College becomes product too: Grade Fácil was born from the pain of building a class schedule every enrollment period.",
   "tcc.kind": "Final undergraduate project", "soon": "Coming soon",
   "tcc.tag": "Mobile app for personal and couple expense management.",
-  "tcc.b1": "Transactions, reports, category spending limits with usage alerts, and WhatsApp-linked accounts.",
-  "tcc.b2": "Requirements and business rules specified before coding, with the rules in an isolated domain layer.",
-  "tcc.b3": "115 automated tests and CI with typecheck, lint and tests.",
+  "tcc.b1": "Personal and couple expenses in one app, with transactions and reports that show where the money is going.",
+  "tcc.b2": "Spending limits per category, with alerts when usage starts getting close to the limit.",
+  "tcc.b3": "WhatsApp-linked accounts, bringing the app into a channel people already use every day.",
   "sec.skills": "Skills",
   "l.pt": "Portuguese", "l.pt.v": "Native", "l.en": "English", "l.en.v": "Advanced · C1", "l.fr": "French", "l.fr.v": "Basic · A2",
   "cv": "Download resume", "c.h": "Let's talk", "c.copy": "Copy email", "c.foot": "Back to top", "rights": "All rights reserved."
