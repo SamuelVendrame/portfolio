@@ -258,6 +258,19 @@ h2 { margin: 0; font-weight: 900; font-size: clamp(28px, 3.6vw, 48px); line-heig
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
   html { scroll-behavior: auto; }
 }
+
+/* cantos arredondados */
+:root { --r-s: 8px; --r-m: 14px; }
+.btn, .links a, .links .priv, .contact .links a, .chip, .theme, .copy, .soon { border-radius: var(--r-s); }
+.lang { border-radius: var(--r-s); overflow: hidden; }
+.sys article, .tcc { border-radius: var(--r-m); }
+.frame::before, .frame .in { border-radius: var(--r-m); }
+.tcc-ph { border-radius: 10px; }
+.tcc-ph span { border-radius: 6px; }
+.bar, .bar i, .meter i { border-radius: 99px; }
+.chip .mg { border-radius: 4px; }
+.sq-list li::before { border-radius: 2px; }
+.cv { border-radius: 4px; }
 </style>
 </head>
 <body>
