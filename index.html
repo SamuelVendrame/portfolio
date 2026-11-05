@@ -59,8 +59,13 @@ a { color: inherit; }
 .contact :focus-visible { outline-color: var(--w); }
 @media (max-width: 760px) { .nav { display: none; } .lang { margin-left: auto; } }
 
-/* ---------- abertura vermelha ---------- */
-.hero { background: var(--paper); color: var(--ink); position: relative; overflow: hidden; }
+/* ---------- bolhas de fundo ---------- */
+#bubbles { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.top, main, .contact { position: relative; z-index: 1; }
+.top { z-index: 20; }
+
+/* ---------- abertura ---------- */
+.hero { background: transparent; color: var(--ink); position: relative; overflow: hidden; }
 .hero .wrap { padding-block: 48px 0; position: relative; }
 .hero .kick { grid-column: 1 / -1; font-weight: 600; font-size: 15px; display: flex; flex-wrap: wrap; gap: 6px 28px; padding-bottom: 28px; }
 .hero .kick span:first-child { color: var(--red); }
@@ -212,6 +217,8 @@ h2::before { content: ""; display: inline-block; width: .4em; height: .4em; back
 </style>
 </head>
 <body>
+<canvas id="bubbles" aria-hidden="true"></canvas>
+
 <header class="top">
   <div class="wrap">
     <a class="mark" href="#inicio"><i style="width:14px;height:14px;background:var(--red);display:block"></i>Samuel Vendrame Bomfim</a>
@@ -553,6 +560,80 @@ secs.forEach(s => io.observe(s));
 let start = "pt";
 try { const s = localStorage.getItem("lang"); if (s === "pt" || s === "en") start = s; else if (!/^pt/i.test(navigator.language || "")) start = "en"; } catch (e) {}
 apply(start, false);
+
+// bolhas e faíscas que sobem do fundo; bolhas desviam do mouse, clique solta um estouro de faíscas
+(() => {
+  const cv = document.getElementById("bubbles"), ctx = cv.getContext("2d");
+  const still = matchMedia("(prefers-reduced-motion: reduce)");
+  let W = 0, H = 0, dpr = 1, red = "#E10600", ink = "#111", items = [], sparks = [], mx = -9999, my = -9999, last = 0;
+  const readColors = () => { const cs = getComputedStyle(document.documentElement); red = cs.getPropertyValue("--red").trim() || red; ink = cs.getPropertyValue("--ink").trim() || ink; };
+  const make = (anywhere) => {
+    const r = 6 + Math.pow(Math.random(), 2.2) * (W < 700 ? 60 : 110);
+    return { r, x: Math.random() * W, y: anywhere ? Math.random() * H : H + r + Math.random() * 120,
+      v: 12 + Math.random() * 28 + (60 - Math.min(r, 60)) * .35, ph: Math.random() * 6.28, sw: 6 + Math.random() * 18,
+      kind: Math.random() < .62 ? "fill" : "ring", a: .07 + Math.random() * .16, ox: 0, oy: 0 };
+  };
+  // faísca: ponto pequeno que sobe rápido, pisca e deixa um rastro curto
+  const ember = (anywhere) => ({ x: Math.random() * W, y: anywhere ? Math.random() * H : H + 10, vx: 0, vy: -(70 + Math.random() * 110),
+    r: .9 + Math.random() * 1.8, ph: Math.random() * 6.28, life: Infinity, red: Math.random() < .75 });
+  const burst = (x, y, n) => { for (let i = 0; i < n; i++) { const a = Math.random() * 6.28, sp = 120 + Math.random() * 320;
+    sparks.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 80, r: 1 + Math.random() * 2, ph: 0, life: .5 + Math.random() * .6, max: 1.1, red: Math.random() < .8 }); } };
+  const resize = () => {
+    dpr = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.round(Math.min(26, Math.max(12, W * H / 52000)));
+    items = Array.from({ length: n }, () => make(true));
+    sparks = Array.from({ length: Math.round(n * .8) }, () => ember(true));
+  };
+  const draw = (t) => {
+    ctx.clearRect(0, 0, W, H);
+    for (const b of items) {
+      const x = b.x + Math.sin(t / 1000 * .6 + b.ph) * b.sw + b.ox, y = b.y + b.oy;
+      ctx.globalAlpha = b.a;
+      ctx.beginPath(); ctx.arc(x, y, b.r, 0, Math.PI * 2);
+      if (b.kind === "fill") { ctx.fillStyle = red; ctx.fill(); }
+      else { ctx.lineWidth = Math.max(1.5, b.r * .06); ctx.strokeStyle = ink; ctx.stroke(); }
+    }
+    ctx.lineCap = "round";
+    for (const s of sparks) {
+      const fade = s.life === Infinity ? .35 + .45 * Math.abs(Math.sin(t / 1000 * 9 + s.ph)) : Math.max(0, s.life / s.max);
+      ctx.globalAlpha = fade; ctx.strokeStyle = ctx.fillStyle = s.red ? red : ink;
+      ctx.lineWidth = s.r; ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(s.x - s.vx * .035, s.y - s.vy * .035); ctx.stroke();
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r * .9, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  };
+  const tick = (t) => {
+    const dt = Math.min(.05, (t - (last || t)) / 1000); last = t;
+    for (let i = 0; i < items.length; i++) {
+      const b = items[i];
+      b.y -= b.v * dt;
+      const dx = b.x + b.ox - mx, dy = b.y + b.oy - my, d = Math.hypot(dx, dy), reach = b.r + 120;
+      if (d < reach && d > 0) { const f = (1 - d / reach) * 90 * dt * 6; b.ox += dx / d * f; b.oy += dy / d * f; }
+      b.ox *= .96; b.oy *= .96;
+      if (b.y + b.r < -20) items[i] = make(false);
+    }
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      const s = sparks[i];
+      if (s.life === Infinity) { s.vx = Math.sin(t / 1000 * 3 + s.ph) * 30; }
+      else { s.vy += 420 * dt; s.vx *= .985; s.life -= dt; }
+      s.x += s.vx * dt; s.y += s.vy * dt;
+      if (s.life <= 0) sparks.splice(i, 1);
+      else if (s.life === Infinity && s.y < -10) { sparks[i] = ember(false); if (Math.random() < .08) burst(sparks[i].x, H * (.2 + Math.random() * .6), 6); }
+    }
+    draw(t);
+    if (!still.matches && !document.hidden) requestAnimationFrame(tick); else last = 0;
+  };
+  addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+  addEventListener("pointerleave", () => { mx = my = -9999; });
+  addEventListener("pointerdown", e => { if (!still.matches && !e.target.closest("a, button")) burst(e.clientX, e.clientY, 18); }, { passive: true });
+  addEventListener("resize", () => { resize(); if (still.matches) draw(0); });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && !still.matches) requestAnimationFrame(tick); });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", readColors);
+  still.addEventListener("change", () => { if (!still.matches) requestAnimationFrame(tick); });
+  readColors(); resize();
+  if (still.matches) draw(0); else requestAnimationFrame(tick);
+})();
 
 const copyBtn = document.getElementById("copy-email");
 copyBtn.addEventListener("click", () => {
